@@ -102,14 +102,29 @@ def read_files():
                                     player_url_025,  player_url_026,  
                                     player_url_027, player_url_028, player_url_029, 
                                     player_url_030, player_url_031, player_url_032])
+    
+    #Get all the names from line 7 - 17 and put it in a set
+    #read one file (player_defnse) get it through column, get all the names to a set
+    #Iterate player_url csv, check the column ('Player')
+    #Go through all the player url rows and check if their name is in the set
+    #If it does not exist, do nothing
+    #If it does, move it to something else
 
     player_names = set([names for names in player_names['player']])
 
     for idx in range(len(player_url_merged[['Player']])):
-        print(player_url_merged[idx])
-        if player_url_merged[idx] in player_names:
-            exit()
+        if player_url_merged.iloc[idx]['Player'] not in player_names:
+            player_url_merged.iloc[idx]['Player'] = None
+            player_url_merged.iloc[idx]['PlayerURL'] = None
+    # player_url_merged = player_url_merged[player_url_merged['Player'] == ""]
+    player_url_merged.dropna(inplace=True)
+    player_names_merged = set([names for names in player_url_merged['Player']])
+    missing_players = player_names ^ player_names_merged
+    missing_players = pd.DataFrame(missing_players, columns=['Players'])
+    missing_players.to_csv('./cleaned-files/missing-players.csv')
 
+    print(f'The len of the new set is {len(player_names ^ player_names_merged)} {player_names ^ player_names_merged}')
+    # print(len(player_names), len(player_url_merged))
     exit()
     
 
