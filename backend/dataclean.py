@@ -1,5 +1,9 @@
 import pandas as pd
-
+from requests.exceptions import HTTPError
+from bs4 import BeautifulSoup
+from io import StringIO
+import requests
+import re
 
 def read_files():
     # Reads csv files via pandas and returns them
@@ -110,6 +114,16 @@ def read_files():
     #If it does not exist, do nothing
     #If it does, move it to something else
 
+    # player_url_merged = 1300
+    # most of them dont exist in our stats db
+    # removing the ones that do not exist in stats db
+    # line 126, we dropped the names
+    # line 130, we got the missing names; we trying to do: missing names + player_url_merged = stats db
+    # we want to merge based on player 
+    # line 134, add rows to player_url_merged from missing_players
+    # player_url_merged[player] += missing_player[player]
+    
+
     player_names = set([names for names in player_names['player']])
 
     for idx in range(len(player_url_merged[['Player']])):
@@ -119,11 +133,30 @@ def read_files():
     # player_url_merged = player_url_merged[player_url_merged['Player'] == ""]
     player_url_merged.dropna(inplace=True)
     player_names_merged = set([names for names in player_url_merged['Player']])
-    missing_players = player_names ^ player_names_merged
-    missing_players = pd.DataFrame(missing_players, columns=['Players'])
-    missing_players.to_csv('./cleaned-files/missing-players.csv')
+    # missing_players = player_names ^ player_names_merged
+    # missing_players = pd.DataFrame(missing_players, columns=['Players'])
+    # missing_players.to_csv('./cleaned-files/missing-players.csv')
+    missing_players = pd.read_csv('./cleaned-files/missing-players.csv')
 
-    print(f'The len of the new set is {len(player_names ^ player_names_merged)} {player_names ^ player_names_merged}')
+    player_url_merged = pd.concat([player_url_merged, missing_players]).drop('Unnamed: 0', axis=1).drop('Unnamed: 2', axis=1)
+
+    # player_url_merged = pd.merge(player_url_merged, missing_players, on="Player", how='left')
+    # player_url_merged.fillna("", inplace=True)
+    # player_url_merged = player_url_merged.concat()
+    player_url_merged.to_csv('./cleaned-files/photoURL.csv')
+    
+    regex = re.compile('.*headshot*.')
+    for idx in range(len(player_url_merged[['Player']])):
+        url = player_url_merged.iloc[idx]['PlayerURL']
+        response = requests.get(url)
+        response.encoding = 'utf-8'
+        soup = BeautifulSoup(response.text, 'lxml')
+        links = soup.find('img', alt= regex)
+        # links = soup.find_all('img', {"alt": 'headshot'})
+        player_url_merged.iloc[idx]['PlayerURL'] = links['src']
+        print(player_url_merged.iloc[idx])
+        
+    # print(f'The len of the new set is {len(player_names ^ player_names_merged)} {player_names ^ player_names_merged}')
     # print(len(player_names), len(player_url_merged))
     exit()
     
