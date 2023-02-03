@@ -4,6 +4,9 @@ from bs4 import BeautifulSoup
 from io import StringIO
 import requests
 import re
+from lxml import html
+from ip import get_proxies
+from itertools import cycle
 
 def read_files():
     # Reads csv files via pandas and returns them
@@ -144,21 +147,29 @@ def read_files():
     # player_url_merged.fillna("", inplace=True)
     # player_url_merged = player_url_merged.concat()
     player_url_merged.to_csv('./cleaned-files/photoURL.csv')
-    
+    ip_list = list(get_proxies())
+    ip_cycle = cycle(ip_list)
+
+        
     regex = re.compile('.*headshot*.')
     for idx in range(len(player_url_merged[['Player']])):
         url = player_url_merged.iloc[idx]['PlayerURL']
-        response = requests.get(url)
-        response.encoding = 'utf-8'
-        soup = BeautifulSoup(response.text, 'lxml')
-        links = soup.find('img', alt= regex)
-        # links = soup.find_all('img', {"alt": 'headshot'})
-        player_url_merged.iloc[idx]['PlayerURL'] = links['src']
-        print(player_url_merged.iloc[idx])
+        proxy = next(ip_cycle)
+        try:
+            response = requests.get(url, proxies={"http": proxy, "https": proxy})
+            response.encoding = 'utf-8'
+            soup = BeautifulSoup(response.text, 'lxml')
+            links = soup.find("img", alt=regex)
+            player_url_merged.iloc[idx]['PlayerURL'] = links['src']
+            print(player_url_merged.iloc[idx])
+            if idx == 2:
+                exit()
+        except:
+            print("Skipping. Connection error")
         
     # print(f'The len of the new set is {len(player_names ^ player_names_merged)} {player_names ^ player_names_merged}')
     # print(len(player_names), len(player_url_merged))
-    exit()
+
     
 
 
