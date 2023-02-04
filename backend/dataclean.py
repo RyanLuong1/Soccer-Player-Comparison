@@ -24,108 +24,15 @@ def read_files():
     player_keepersadv = pd.read_csv('./dataset/player_keepersadv.csv')
     player_names = player_defense[['player']]
 
-    # Player URL Player, PlayerURL
-    player_url_001 = pd.read_csv('./dataset/url-images/image_file_001.csv')
-    player_url_002 = pd.read_csv('./dataset/url-images/image_file_002.csv')
-    player_url_003 = pd.read_csv('./dataset/url-images/image_file_003.csv')
-    player_url_004 = pd.read_csv('./dataset/url-images/image_file_004.csv')
-    player_url_005 = pd.read_csv('./dataset/url-images/image_file_005.csv')
-    player_url_006 = pd.read_csv('./dataset/url-images/image_file_006.csv')
-    player_url_007 = pd.read_csv('./dataset/url-images/image_file_007.csv')
-    player_url_008 = pd.read_csv('./dataset/url-images/image_file_008.csv')
-    player_url_009 = pd.read_csv('./dataset/url-images/image_file_009.csv')
-    player_url_010 = pd.read_csv('./dataset/url-images/image_file_010.csv')
-    player_url_011 = pd.read_csv('./dataset/url-images/image_file_011.csv')
-    player_url_012 = pd.read_csv('./dataset/url-images/image_file_012.csv')
-    player_url_013 = pd.read_csv('./dataset/url-images/image_file_013.csv')
-    player_url_014 = pd.read_csv('./dataset/url-images/image_file_014.csv')
-    player_url_015 = pd.read_csv('./dataset/url-images/image_file_015.csv')
-    player_url_016 = pd.read_csv('./dataset/url-images/image_file_016.csv')
-    player_url_017 = pd.read_csv('./dataset/url-images/image_file_017.csv')
-    player_url_018 = pd.read_csv('./dataset/url-images/image_file_018.csv')
-    player_url_019 = pd.read_csv('./dataset/url-images/image_file_019.csv')
-    player_url_020 = pd.read_csv('./dataset/url-images/image_file_020.csv')
-    player_url_021 = pd.read_csv('./dataset/url-images/image_file_021.csv')
-    player_url_022 = pd.read_csv('./dataset/url-images/image_file_022.csv')
-    player_url_023 = pd.read_csv('./dataset/url-images/image_file_023.csv')
-    player_url_024 = pd.read_csv('./dataset/url-images/image_file_024.csv')
-    player_url_025 = pd.read_csv('./dataset/url-images/image_file_025.csv')
-    player_url_026 = pd.read_csv('./dataset/url-images/image_file_026.csv')
-    player_url_027 = pd.read_csv('./dataset/url-images/image_file_027.csv')
-    player_url_028 = pd.read_csv('./dataset/url-images/image_file_028.csv')
-    player_url_029 = pd.read_csv('./dataset/url-images/image_file_029.csv')
-    player_url_030 = pd.read_csv('./dataset/url-images/image_file_030.csv')
-    player_url_031 = pd.read_csv('./dataset/url-images/image_file_031.csv')
-    player_url_032 = pd.read_csv('./dataset/url-images/image_file_032.csv')
+    # Player Profile URL
+    player_url = {}
+    for i in range(1,33):
+        file_index = f'{i :03}'
+        key = 'player_url_' + file_index
+        player_url[key] = pd.read_csv('./dataset/url-images/image_file_' + file_index + '.csv')
+        player_url[key] = player_url[key][['Player','PlayerURL']]
 
-    #Get all the names from line 7 - 17 and put it in a set
-    #read one file (player_defnse) get it through column, get all the names to a set
-    #Iterate player_url csv, check the column ('Player')
-    #Go through all the player url rows and check if their name is in the set
-    #If it does not exist in the set, erase the whole row
-    #If it does, do nothing
-
-    player_url_001 = player_url_001[['Player', 'PlayerURL']]
-    player_url_002 = player_url_002[['Player', 'PlayerURL']]
-    player_url_003 = player_url_003[['Player', 'PlayerURL']]
-    player_url_004 = player_url_004[['Player', 'PlayerURL']]
-    player_url_005 = player_url_005[['Player', 'PlayerURL']]
-    player_url_006 = player_url_006[['Player', 'PlayerURL']]
-    player_url_007 = player_url_007[['Player', 'PlayerURL']]
-    player_url_008 = player_url_008[['Player', 'PlayerURL']]
-    player_url_009 = player_url_009[['Player', 'PlayerURL']]
-    player_url_010 = player_url_010[['Player', 'PlayerURL']]
-    player_url_011 = player_url_011[['Player', 'PlayerURL']]
-    player_url_012 = player_url_012[['Player', 'PlayerURL']]
-    player_url_013 = player_url_013[['Player', 'PlayerURL']]
-    player_url_014 = player_url_014[['Player', 'PlayerURL']]
-    player_url_015 = player_url_015[['Player', 'PlayerURL']]
-    player_url_016 = player_url_016[['Player', 'PlayerURL']]
-    player_url_017 = player_url_017[['Player', 'PlayerURL']]
-    player_url_018 = player_url_018[['Player', 'PlayerURL']]
-    player_url_019 = player_url_019[['Player', 'PlayerURL']]
-    player_url_020 = player_url_020[['Player', 'PlayerURL']]
-    player_url_021 = player_url_021[['Player', 'PlayerURL']]
-    player_url_022 = player_url_022[['Player', 'PlayerURL']]
-    player_url_023 = player_url_023[['Player', 'PlayerURL']]
-    player_url_024 = player_url_024[['Player', 'PlayerURL']]
-    player_url_025 = player_url_025[['Player', 'PlayerURL']]
-    player_url_026 = player_url_026[['Player', 'PlayerURL']]
-    player_url_027 = player_url_027[['Player', 'PlayerURL']]
-    player_url_028 = player_url_028[['Player', 'PlayerURL']]
-    player_url_029 = player_url_029[['Player', 'PlayerURL']]
-    player_url_030 = player_url_030[['Player', 'PlayerURL']]
-    player_url_031 = player_url_031[['Player', 'PlayerURL']]
-    player_url_032 = player_url_032[['Player', 'PlayerURL']]
-
-    player_url_merged = pd.concat([player_url_001, player_url_002, player_url_003, 
-                                    player_url_004, player_url_005, player_url_006, 
-                                    player_url_007, player_url_008, player_url_009, 
-                                    player_url_010, player_url_011, player_url_012, 
-                                    player_url_013, player_url_014, player_url_015, 
-                                    player_url_016, player_url_017, player_url_018, 
-                                    player_url_019, player_url_020, player_url_021, 
-                                    player_url_022, player_url_023, player_url_024, 
-                                    player_url_025,  player_url_026,  
-                                    player_url_027, player_url_028, player_url_029, 
-                                    player_url_030, player_url_031, player_url_032])
-    
-    #Get all the names from line 7 - 17 and put it in a set
-    #read one file (player_defnse) get it through column, get all the names to a set
-    #Iterate player_url csv, check the column ('Player')
-    #Go through all the player url rows and check if their name is in the set
-    #If it does not exist, do nothing
-    #If it does, move it to something else
-
-    # player_url_merged = 1300
-    # most of them dont exist in our stats db
-    # removing the ones that do not exist in stats db
-    # line 126, we dropped the names
-    # line 130, we got the missing names; we trying to do: missing names + player_url_merged = stats db
-    # we want to merge based on player 
-    # line 134, add rows to player_url_merged from missing_players
-    # player_url_merged[player] += missing_player[player]
-    
+    player_url_merged = pd.concat(player_url.values(), ignore_index=True)    
 
     player_names = set([names for names in player_names['player']])
 
@@ -133,12 +40,15 @@ def read_files():
         if player_url_merged.iloc[idx]['Player'] not in player_names:
             player_url_merged.iloc[idx]['Player'] = None
             player_url_merged.iloc[idx]['PlayerURL'] = None
-    # player_url_merged = player_url_merged[player_url_merged['Player'] == ""]
+    
     player_url_merged.dropna(inplace=True)
+    
     player_names_merged = set([names for names in player_url_merged['Player']])
+    
     # missing_players = player_names ^ player_names_merged
     # missing_players = pd.DataFrame(missing_players, columns=['Players'])
     # missing_players.to_csv('./cleaned-files/missing-players.csv')
+    
     missing_players = pd.read_csv('./cleaned-files/missing-players.csv')
 
     player_url_merged = pd.concat([player_url_merged, missing_players]).drop('Unnamed: 0', axis=1).drop('Unnamed: 2', axis=1)
@@ -150,22 +60,19 @@ def read_files():
     ip_list = list(get_proxies())
     ip_cycle = cycle(ip_list)
 
-        
     regex = re.compile('.*headshot*.')
     for idx in range(len(player_url_merged[['Player']])):
         url = player_url_merged.iloc[idx]['PlayerURL']
         proxy = next(ip_cycle)
-        try:
-            response = requests.get(url, proxies={"http": proxy, "https": proxy})
-            response.encoding = 'utf-8'
-            soup = BeautifulSoup(response.text, 'lxml')
-            links = soup.find("img", alt=regex)
-            player_url_merged.iloc[idx]['PlayerURL'] = links['src']
-            print(player_url_merged.iloc[idx])
-            if idx == 2:
-                exit()
-        except:
-            print("Skipping. Connection error")
+    
+        response = requests.get(url, proxies={"http": f'http://{proxy}', "https": f'http://{proxy}'})
+        response.encoding = 'utf-8'
+        soup = BeautifulSoup(response.text, 'lxml')
+        links = soup.find("img", alt=regex)
+        player_url_merged.iloc[idx]['PlayerURL'] = links['src']
+        print(player_url_merged.iloc[idx])
+        if idx == 2:
+            exit()
         
     # print(f'The len of the new set is {len(player_names ^ player_names_merged)} {player_names ^ player_names_merged}')
     # print(len(player_names), len(player_url_merged))
