@@ -7,6 +7,7 @@ import re
 from lxml import html
 from ip import get_proxies
 from itertools import cycle
+import time
 
 def read_files():
     # Reads csv files via pandas and returns them
@@ -56,23 +57,26 @@ def read_files():
     # player_url_merged = pd.merge(player_url_merged, missing_players, on="Player", how='left')
     # player_url_merged.fillna("", inplace=True)
     # player_url_merged = player_url_merged.concat()
-    player_url_merged.to_csv('./cleaned-files/photoURL.csv')
-    ip_list = list(get_proxies())
-    ip_cycle = cycle(ip_list)
+    # player_url_merged.to_csv('./cleaned-files/photoURL.csv')
+    # ip_list = list(get_proxies())
+    # ip_cycle = cycle(ip_list)
 
     regex = re.compile('.*headshot*.')
     for idx in range(len(player_url_merged[['Player']])):
         url = player_url_merged.iloc[idx]['PlayerURL']
-        proxy = next(ip_cycle)
+        # proxy = next(ip_cycle)
     
-        response = requests.get(url, proxies={"http": f'http://{proxy}', "https": f'http://{proxy}'})
+        response = requests.get(url)
+        # , proxies={"http": f'http://{proxy}', "https": f'http://{proxy}'}
+        time.sleep(2)
         response.encoding = 'utf-8'
         soup = BeautifulSoup(response.text, 'lxml')
         links = soup.find("img", alt=regex)
         player_url_merged.iloc[idx]['PlayerURL'] = links['src']
-        print(player_url_merged.iloc[idx])
-        if idx == 2:
-            exit()
+        print(f'Image URL complete for {idx}/{len(player_url_merged)}')
+
+    player_url_merged.to_csv('./dataset/cleaned-files/player-image-urls.csv')
+    exit()
         
     # print(f'The len of the new set is {len(player_names ^ player_names_merged)} {player_names ^ player_names_merged}')
     # print(len(player_names), len(player_url_merged))
