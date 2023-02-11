@@ -62,67 +62,56 @@ def read_files():
     # ip_cycle = cycle(ip_list)
 
     regex = re.compile('.*headshot*.')
-    proxies = {
-        "186.166.138.51:999",
-        "181.191.226.1:999",
-        "186.167.67.99:999",
-        "38.41.0.91:999",
-        "14.170.154.193:19132",
-        "123.30.154.38:2008",
-        "103.176.179.84:3128",
-        "113.161.131.43:80",
-        "42.96.47.158:3128",
-        "185.123.143.251:3128",
-        "185.123.143.247:3128",
-        "37.120.140.158:3128"
-    }
-    invalid_proxy_set = {}
-    ip_cycle = cycle(proxies)
-    print(len(proxies))
-    for index in range(100):
-        print(index)
-        url = 'http://www.google.com'
-        proxy = next(ip_cycle)
-        try:
-            response = requests.get(url, proxies={"http": f'http://{proxy}', "htpps": f'https://{proxy}'})
-            print(response)
-        except:
-            invalid_proxy = proxy
-            invalid_proxy_set.add(invalid_proxy)
-            print('Invalid IP; skipping!')
-    
-    exit()
 
-    # try:
-    #         response = requests.get(url, proxies={"http": proxy, "https": proxy})
-    #         response.encoding = 'utf-8'
-    #         soup = BeautifulSoup(response.text, 'lxml')
-    #         links = soup.find("img", alt=regex)
-    #         player_url_merged.iloc[idx]['PlayerURL'] = links['src']
-    #         print(player_url_merged.iloc[idx])
-    #         if idx == 2:
-    #             exit()
+
+    # invalid_proxy_set = {}
+    # ip_cycle = cycle(proxies)
+    # print(len(proxies))
+    # for index in range(100):
+    #     print(index)
+    #     url = 'http://www.google.com'
+    #     proxy = next(ip_cycle)
+    #     try:
+    #         response = requests.get(url, proxies={"http": f'http://{proxy}', "htpps": f'https://{proxy}'})
+    #         print(response)
     #     except:
-    #         print("Skipping. Connection error")        
-
-    exit()
+    #         invalid_proxy = proxy
+    #         invalid_proxy_set.add(invalid_proxy)
+    #         print('Invalid IP; skipping!')
     
+    # exit()  
     
-    
-    for idx in range(len(player_url_merged[['Player']])):
-        url = player_url_merged.iloc[idx]['PlayerURL']
+    player_url_merged_1 = pd.DataFrame(columns=["Player","PlayerURL"])
+    for index in range(1, 270):
+        url = player_url_merged.iloc[index]['PlayerURL']
+        name = player_url_merged.iloc[index]['Player']
         # proxy = next(ip_cycle)
-    
+        print(url, name)
         response = requests.get(url)
         # , proxies={"http": f'http://{proxy}', "https": f'http://{proxy}'}
         time.sleep(2)
         response.encoding = 'utf-8'
         soup = BeautifulSoup(response.text, 'lxml')
         links = soup.find("img", alt=regex)
-        player_url_merged.iloc[idx]['PlayerURL'] = links['src']
-        print(f'Image URL complete for {idx}/{len(player_url_merged)}')
+        try:
+            image_url = links['src']
+        except TypeError:
+            image_url = ""
+        player_url_merged_1.loc[index] = [name] + [image_url]
+        # player_url_merged_1.iloc[index]['PlayerURL'] = links['src']
+        print(f'Image URL complete for {index}/{len(player_url_merged)}')
+    player_url_merged_1.to_csv('./cleaned-files/player-image-urls-1.csv')
+    player_url_merged_1.head()
+    # 1-269 R
+    # 270-539 Y
+    # 540-680 YS
 
-    player_url_merged.to_csv('./dataset/cleaned-files/player-image-urls.csv')
+    # player_url_merged_1 = pd.DataFrame(columns=["Player","PlayerURL"])
+    # player_url_merged_2 = pd.DataFrame(columns=["Player","PlayerURL"])
+    # player_url_merged_3 = pd.DataFrame(columns=["Player","PlayerURL"])
+
+
+    # player_url_merged_1.to_csv('./dataset/cleaned-files/player-image-urls-1.csv')
     exit()
         
     # print(f'The len of the new set is {len(player_names ^ player_names_merged)} {player_names ^ player_names_merged}')
