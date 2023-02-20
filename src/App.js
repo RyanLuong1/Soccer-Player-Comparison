@@ -1,5 +1,5 @@
 import './App.css';
-import PlayerCard from "./components/PlayerCard";
+import PlayerCard from "./components/PlayerCard.tsx";
 
 function App() {
   return (
