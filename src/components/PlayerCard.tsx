@@ -23,7 +23,8 @@ const PlayerCard = () => {
                 Cristano Ronaldo
                 </div>
 
-                <div className="stats" style={{flex: 5.5, backgroundColor: "blue"}}>
+                <div className="stats" style={{flex: 5.5, backgroundColor: "blue", backgroundImage: "url(https://media.discordapp.net/attachments/693920868220403742/1080925124812886157/player-card-bottom-07.jpg?width=636&height=467)",
+            backgroundSize: "cover"}}>
                     <div className="grid grid-cols-2 gap-3">
                         <div>01</div>
                         <div>02</div>
